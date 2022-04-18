@@ -1,0 +1,48 @@
+import * as CryptoJS from 'crypto-js';
+
+const  keySize = 256;
+const iterations = 1000;
+
+
+export const encrypt256 = (msg: string, pass: string) => {
+  console.log(msg +" ---- "+ pass)
+    let salt = CryptoJS.lib.WordArray.random(16);
+    
+    let key = CryptoJS.PBKDF2(pass, salt, {
+        keySize: keySize/32,
+        iterations: iterations
+      });
+  
+    let iv = CryptoJS.lib.WordArray.random(16);
+    
+    let encrypted = CryptoJS.AES.encrypt(msg, key, { 
+      iv: iv, 
+      padding: CryptoJS.pad.Pkcs7,
+      mode: CryptoJS.mode.CBC
+      
+    });
+    
+    // salt, iv will be hex 32 in length
+    // append them to the ciphertext for use  in decryption
+    let transitmessage = salt.toString()+ iv.toString() + encrypted.toString();
+    return transitmessage;
+  }
+
+  export const  decrypt256 = (transitmessage:string, pass:string) => {
+    let salt = CryptoJS.enc.Hex.parse(transitmessage.substring(0, 32));
+    let iv = CryptoJS.enc.Hex.parse(transitmessage.substring(32, 64))
+    let encrypted = transitmessage.substring(64);
+    
+    let key = CryptoJS.PBKDF2(pass, salt, {
+        keySize: keySize/32,
+        iterations: iterations
+      });
+  
+    let decrypted = CryptoJS.AES.decrypt(encrypted, key, { 
+      iv: iv, 
+      padding: CryptoJS.pad.Pkcs7,
+      mode: CryptoJS.mode.CBC
+      
+    })
+    return decrypted;
+  }
