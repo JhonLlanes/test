@@ -1,10 +1,14 @@
 package ec.llanes.objrestdatajpa.modelo;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "books")
+@ApiModel("ENTIDAD LIBRO ")
 public class Book {
 
     @Id
@@ -13,6 +17,7 @@ public class Book {
 
     private String title;
     private String autor;
+    @ApiModelProperty("NUMERO DE PAGINAS")
     private String paginas;
     private Double costo;
     private LocalDate lazamientofecha;
