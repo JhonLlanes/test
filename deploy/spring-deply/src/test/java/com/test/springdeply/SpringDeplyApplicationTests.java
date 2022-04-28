@@ -1,0 +1,13 @@
+package com.test.springdeply;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class SpringDeplyApplicationTests {
+
+    @Test
+    void contextLoads() {
+    }
+
+}
